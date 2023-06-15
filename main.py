@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
+import os.path
 from argparse import ArgumentParser, Namespace
+
+from pycparser import parse_file
 
 
 def main(args: Namespace) -> int:
-    try:
-        with open(args.input, "r") as f:
-            print(f.read())
-    except FileNotFoundError:
-        print(f"File '{args.input}' not found")
+    if os.path.isfile(args.input) == False:
+        print(f"File {args.input} does not exist")
         return 1
+
+    ast = parse_file(args.input, use_cpp=True)
     return 0
 
 
