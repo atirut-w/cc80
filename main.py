@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-def main() -> int:
-    print("Hello World!")
+from argparse import ArgumentParser, Namespace
+
+
+def main(args: Namespace) -> int:
     return 0
 
 
 if __name__ == "__main__":
-    exit(main())
+    parser = ArgumentParser()
+
+    exit(main(parser.parse_args()))
