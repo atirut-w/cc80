@@ -3,8 +3,12 @@ from argparse import ArgumentParser, Namespace
 
 
 def main(args: Namespace) -> int:
-    with open(args.input, "r") as f:
-        print(f.read())
+    try:
+        with open(args.input, "r") as f:
+            print(f.read())
+    except FileNotFoundError:
+        print(f"File '{args.input}' not found")
+        return 1
     return 0
 
 
