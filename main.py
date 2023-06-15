@@ -7,6 +7,6 @@ def main(args: Namespace) -> int:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser()
+    parser = ArgumentParser(prog="CC80", description="C to Z80 ASM compiler")
 
     exit(main(parser.parse_args()))
