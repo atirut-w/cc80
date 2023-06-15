@@ -3,7 +3,13 @@ import os.path
 from argparse import ArgumentParser, Namespace
 
 from pycparser import parse_file
+from pycparser.c_ast import NodeVisitor
+from pycparser.plyparser import ParseError
 
+
+class Compiler(NodeVisitor):
+    def __init__(self, output: str = "out.asm"):
+        self.file = open(output, "w")
 
 def main(args: Namespace) -> int:
     if os.path.isfile(args.input) == False:
@@ -11,6 +17,8 @@ def main(args: Namespace) -> int:
         return 1
 
     ast = parse_file(args.input, use_cpp=True)
+    compiler = Compiler()
+    compiler.visit(ast)
     return 0
 
 
