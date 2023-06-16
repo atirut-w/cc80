@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": [
-                "${workspaceFolder}/tests/simple_function.c"
+                "${workspaceFolder}/tests/variables.c"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
