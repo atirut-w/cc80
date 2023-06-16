@@ -13,7 +13,7 @@ class Compiler(NodeVisitor):
         self.output: TextIOWrapper
         self.ast: FileAST = ast
 
-        self.functions: list[FuncDef] = []
+        self.text: list[FuncDef] = []
 
     def compile(self, output: str):
         self.output = open(output, "w")
@@ -26,7 +26,7 @@ class Compiler(NodeVisitor):
         # top-level stuff first so we can organize them in the output.
         self.visit(self.ast)
 
-        for function in self.functions:
+        for function in self.text:
             self.visit(function)
 
         self.output.close()
@@ -35,7 +35,7 @@ class Compiler(NodeVisitor):
         for child in node.ext:
             match child.__class__.__name__:
                 case "FuncDef":
-                    self.functions.append(child)
+                    self.text.append(child)
                 case _:
                     print(
                         f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
