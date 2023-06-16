@@ -79,15 +79,16 @@ class Compiler(NodeVisitor):
 
     def visit_Decl(self, node: Decl):
         self.write(f"{node.name}:\n")
-        self.writetab("DW ")
 
         if node.init != None:
             match node.init.type:
                 case "int":
-                    self.writetab(f"{int(node.init.value) & 0xff}\n")
+                    self.writetab(f"DW {int(node.init.value) & 0xffff}\n")
+                case "string":
+                    self.writetab(f"DB {node.init.value}\n")
                 case _:
-                    print("Unimplemented initializer type, data replaced with 0.")
-                    self.writetab("0\n")
+                    print("Unimplemented initializer type, bail out.")
+                    exit(1)
         else:
             self.writetab("0\n")
 
