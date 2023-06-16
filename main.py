@@ -3,7 +3,7 @@ import os.path
 from argparse import ArgumentParser, Namespace
 
 from pycparser import parse_file
-from pycparser.c_ast import FileAST, NodeVisitor, FuncDef
+from pycparser.c_ast import FileAST, FuncDef, NodeVisitor
 from pycparser.plyparser import ParseError
 
 
