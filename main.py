@@ -25,6 +25,10 @@ class Compiler(NodeVisitor):
         # Note: does not actually compile anything. We want to gather all the
         # top-level stuff first so we can organize them in the output.
         self.visit(self.ast)
+
+        # TODO: Compile functions, declarations and typedefs
+
+        self.output.close()
     
     def visit_FileAST(self, node: FileAST):
         for child in node.ext:
