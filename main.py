@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 from io import TextIOWrapper
 
 from pycparser import parse_file
-from pycparser.c_ast import Decl, FileAST, FuncDef, NodeVisitor
+from pycparser.c_ast import *
 from pycparser.plyparser import ParseError
 
 
@@ -74,23 +74,29 @@ class Compiler(NodeVisitor):
                         f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
                     )
 
-    def visit_FuncDef(self, node: FuncDef):
-        pass
-
     def visit_Decl(self, node: Decl):
-        self.write(f"{node.name}:\n")
+        self.write(f"\n{node.name}:\n")
+        self.visit(node.type)
 
-        if node.init != None:
-            match node.init.type:
-                case "int":
-                    self.writetab(f"DW {int(node.init.value) & 0xffff}\n")
-                case "string":
-                    self.writetab(f"DB {node.init.value}\n")
-                case _:
-                    print("Unimplemented initializer type, bail out.")
-                    exit(1)
-        else:
-            self.writetab("0\n")
+        if node.type.__class__.__name__ != "FuncDecl":
+            if node.init != None:
+                match node.init.type:
+                    case "int":
+                        self.write(f"{int(node.init.value) & 0xffff}\n")
+    
+    def visit_TypeDecl(self, node: TypeDecl):
+        self.visit(node.type)
+    
+    def visit_FuncDecl(self, node: FuncDecl):
+        self.writetab("RET\n")
+    
+    def visit_IdentifierType(self, node: IdentifierType):
+        match node.names[0]:
+            case "int":
+                self.writetab("DW ")
+            case _:
+                print(f"Unimplemented type `{node.names[0]}`, bailing out.")
+                exit(1)
 
 
 def main(args: Namespace) -> int:
