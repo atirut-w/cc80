@@ -8,7 +8,7 @@ from pycparser.plyparser import ParseError
 
 
 class Compiler(NodeVisitor):
-    def __init__(self, output: str = "out.asm"):
+    def __init__(self, output: str):
         self.file = open(output, "w")
 
 
@@ -18,7 +18,7 @@ def main(args: Namespace) -> int:
         return 1
 
     ast: FileAST = parse_file(args.input, use_cpp=True)
-    compiler = Compiler()
+    compiler = Compiler(args.output)
     compiler.visit(ast)
     return 0
 
@@ -26,5 +26,6 @@ def main(args: Namespace) -> int:
 if __name__ == "__main__":
     parser = ArgumentParser(prog="CC80", description="C to Z80 ASM compiler")
     parser.add_argument("input", help="Input file")
+    parser.add_argument("-o", "--output", help="Output file", default="out.asm")
 
     exit(main(parser.parse_args()))
