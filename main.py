@@ -26,7 +26,8 @@ class Compiler(NodeVisitor):
         # top-level stuff first so we can organize them in the output.
         self.visit(self.ast)
 
-        # TODO: Compile functions, declarations and typedefs
+        for function in self.functions:
+            self.visit(function)
 
         self.output.close()
 
@@ -39,6 +40,9 @@ class Compiler(NodeVisitor):
                     print(
                         f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
                     )
+
+    def visit_FuncDef(self, node: FuncDef):
+        pass
 
 
 def main(args: Namespace) -> int:
