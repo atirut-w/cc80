@@ -21,6 +21,9 @@ class Compiler(NodeVisitor):
     def write(self, s: str):
         self.output.write(s)
 
+    def writetab(self, s: str):
+        self.write("\t" + s)
+
     def compile(self, output: str):
         self.output = open(output, "w")
         self.write("; " + ("=" * 78) + "\n")
