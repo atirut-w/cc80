@@ -22,11 +22,6 @@ class Compiler(NodeVisitor):
 
         self.visit(self.ast)
 
-    def visit_FileAST(self, node: FileAST):
-        for child in node:
-            if type(child) == FuncDef:
-                self.functions.append(child)
-
 
 def main(args: Namespace) -> int:
     if os.path.isfile(args.input) == False:
