@@ -11,6 +11,7 @@ from pycparser.plyparser import ParseError
 class Compiler(NodeVisitor):
     def __init__(self, ast: FileAST):
         self.output: TextIOWrapper
+        self.ast: FileAST = ast
         self.functions: list[FuncDef] = []
 
     def compile(self, output: str):
