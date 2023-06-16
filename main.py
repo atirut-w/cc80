@@ -29,14 +29,16 @@ class Compiler(NodeVisitor):
         # TODO: Compile functions, declarations and typedefs
 
         self.output.close()
-    
+
     def visit_FileAST(self, node: FileAST):
         for child in node.ext:
             match child.__class__.__name__:
                 case "FuncDef":
                     self.functions.append(node)
                 case _:
-                    print(f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect.")
+                    print(
+                        f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
+                    )
 
 
 def main(args: Namespace) -> int:
