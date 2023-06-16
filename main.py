@@ -29,21 +29,25 @@ class Compiler(NodeVisitor):
         # top-level stuff first so we can organize them in the output.
         self.visit(self.ast)
 
-        f.write("\nSECTION text\n")
-        for function in self.text:
-            self.visit(function)
+        if len(self.text) > 0:
+            f.write("\nSECTION text\n")
+            for function in self.text:
+                self.visit(function)
 
-        f.write("\nSECTION data\n")
-        for symbol in self.data:
-            self.visit(symbol)
+        if len(self.data) > 0:
+            f.write("\nSECTION data\n")
+            for symbol in self.data:
+                self.visit(symbol)
 
-        f.write("\nSECTION rodata\n")
-        for symbol in self.rodata:
-            self.visit(symbol)
+        if len(self.rodata) > 0:
+            f.write("\nSECTION rodata\n")
+            for symbol in self.rodata:
+                self.visit(symbol)
 
-        f.write("\nSECTION bss\n")
-        for symbol in self.bss:
-            self.visit(symbol)
+        if len(self.bss) > 0:
+            f.write("\nSECTION bss\n")
+            for symbol in self.bss:
+                self.visit(symbol)
 
         self.output.close()
 
