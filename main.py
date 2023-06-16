@@ -89,6 +89,11 @@ class Compiler(NodeVisitor):
             match node.type.type.names[0]:
                 case "int":
                     self.writetab("DW ")
+                case "char":
+                    self.writetab("DB ")
+                case _:
+                    print(f"Unimplemented type `{node.type.type.names[0]}`, bailing out.")
+                    exit(1)
             
             if node.init != None:
                 match node.init.type:
