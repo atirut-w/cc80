@@ -3,13 +3,18 @@ import os.path
 from argparse import ArgumentParser, Namespace
 
 from pycparser import parse_file
-from pycparser.c_ast import FileAST, NodeVisitor
+from pycparser.c_ast import FileAST, NodeVisitor, FuncDef
 from pycparser.plyparser import ParseError
 
 
 class Compiler(NodeVisitor):
     def __init__(self):
-        pass
+        self.functions: list[FuncDef] = []
+
+    def visit_FileAST(self, node: FileAST):
+        for child in node:
+            if type(child) == FuncDef:
+                self.functions.append(child)
 
 
 def main(args: Namespace) -> int:
