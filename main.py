@@ -56,6 +56,14 @@ class Compiler(NodeVisitor):
             match child.__class__.__name__:
                 case "FuncDef":
                     self.text.append(child)
+                case "Decl":
+                    if child.init == None:
+                        self.bss.append(child)
+                    else:
+                        if "const" in child.quals:
+                            self.rodata.append(child)
+                        else:
+                            self.data.append(child)
                 case _:
                     print(
                         f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
