@@ -78,7 +78,18 @@ class Compiler(NodeVisitor):
         pass
 
     def visit_Decl(self, node: Decl):
-        pass
+        self.write(f"{node.name}:\n")
+        self.writetab("DW ")
+
+        if node.init != None:
+            match node.init.type:
+                case "int":
+                    self.writetab(f"{int(node.init.value) & 0xff}\n")
+                case _:
+                    print("Unimplemented initializer type, data replaced with 0.")
+                    self.writetab("0\n")
+        else:
+            self.writetab("0\n")
 
 
 def main(args: Namespace) -> int:
