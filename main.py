@@ -8,8 +8,8 @@ from pycparser.plyparser import ParseError
 
 
 class Compiler(NodeVisitor):
-    def __init__(self, output: str):
-        self.file = open(output, "w")
+    def __init__(self):
+        pass
 
 
 def main(args: Namespace) -> int:
@@ -18,7 +18,7 @@ def main(args: Namespace) -> int:
         return 1
 
     ast: FileAST = parse_file(args.input, use_cpp=True)
-    compiler = Compiler(args.output)
+    compiler = Compiler()
     compiler.visit(ast)
     return 0
 
