@@ -8,8 +8,9 @@ from pycparser.plyparser import ParseError
 
 
 class Compiler(NodeVisitor):
-    def __init__(self):
+    def __init__(self, ast: FileAST):
         self.functions: list[FuncDef] = []
+        self.visit(ast)
 
     def visit_FileAST(self, node: FileAST):
         for child in node:
@@ -23,8 +24,7 @@ def main(args: Namespace) -> int:
         return 1
 
     ast: FileAST = parse_file(args.input, use_cpp=True)
-    compiler = Compiler()
-    compiler.visit(ast)
+    compiler = Compiler(ast)
     return 0
 
 
