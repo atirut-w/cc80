@@ -74,29 +74,26 @@ class Compiler(NodeVisitor):
                         f"Unimplemented top-level node `{child.__class__.__name__}`, generated assembly may be incorrect."
                     )
 
-    def visit_Decl(self, node: Decl):
-        self.write(f"\n{node.name}:\n")
-        self.visit(node.type)
+    def visit_FuncDef(self, node: FuncDef):
+        self.visit(node.decl)
 
-        if node.type.__class__.__name__ != "FuncDecl":
+        # TODO: Function body
+        self.writetab("RET\n")
+
+    def visit_Decl(self, node: Decl):
+        # Declare new label
+        self.write(f"\n{node.name}:\n")
+
+        # We only want to add stuff for non-functions
+        if type(node.type) != FuncDecl:
+            match node.type.type.names[0]:
+                case "int":
+                    self.writetab("DW ")
+            
             if node.init != None:
                 match node.init.type:
                     case "int":
                         self.write(f"{int(node.init.value) & 0xffff}\n")
-    
-    def visit_TypeDecl(self, node: TypeDecl):
-        self.visit(node.type)
-    
-    def visit_FuncDecl(self, node: FuncDecl):
-        self.writetab("RET\n")
-    
-    def visit_IdentifierType(self, node: IdentifierType):
-        match node.names[0]:
-            case "int":
-                self.writetab("DW ")
-            case _:
-                print(f"Unimplemented type `{node.names[0]}`, bailing out.")
-                exit(1)
 
 
 def main(args: Namespace) -> int:
